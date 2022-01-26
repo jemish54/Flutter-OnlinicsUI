@@ -4,5 +4,5 @@
 
 # ScreenShots
 
-![Home Screen] (home_screen.jpg)
-![Detail Screen] (detail_screen.jpg)
+![Home Screen](/assets/home_screen.jpg)
+![Detail Screen](/assets/detail_screen.jpg)
