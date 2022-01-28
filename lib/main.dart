@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onlinics_ui/Navigation.dart';
 import 'package:onlinics_ui/screens/detail_screen.dart';
+import 'package:onlinics_ui/screens/history_screen.dart';
 import 'package:onlinics_ui/screens/home_screen.dart';
 import 'package:onlinics_ui/screens/map_screen.dart';
 import 'package:onlinics_ui/screens/profile_screen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         Constants.DetailScreenRoute: (_) => DetailScreen(),
         Constants.MapScreenRoute: (_) => MapScreen(),
         Constants.ProfileScreenRoute: (_) => ProfileScreen(),
+        Constants.HistoryScreenRoute: (_) => HistoryScreen(),
       },
     );
   }

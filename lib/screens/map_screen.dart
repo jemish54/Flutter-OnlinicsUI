@@ -5,8 +5,13 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
+    return SizedBox.expand(
+      child: Container(
+        child: Image.asset(
+          "assets/images/location.png",
+          fit: BoxFit.fitHeight,
+        ),
+      ),
     );
   }
 }
