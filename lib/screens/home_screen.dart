@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onlinics_ui/Constants.dart';
+import 'package:onlinics_ui/main.dart';
 
-import '../ElevatedButton.dart';
+import '../CustomWidgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -96,23 +97,10 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // * Profile Photo
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            image: DecorationImage(
-                              fit: BoxFit.fitHeight,
-                              image: NetworkImage(
-                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkAMBLJMV2zScXlokpLpjnWZ65ve6OHJ8vg&usqp=CAU"),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: 1.0,
-                                  color: Colors.blue[700]!,
-                                  blurRadius: 2)
-                            ]),
-                      ),
+                      ElevatedImage(
+                          Size(48, 48),
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkAMBLJMV2zScXlokpLpjnWZ65ve6OHJ8vg&usqp=CAU",
+                          12),
                       // * Name and Specialization
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,21 +184,21 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            DoctorCard(context),
-            DoctorCard(context),
-            DoctorCard(context),
-            DoctorCard(context),
+            for (int i = 0; i < 5; i++) DoctorCard(context, i),
           ],
         ),
       ),
     );
   }
 
-  Widget DoctorCard(BuildContext context) {
+  Widget DoctorCard(BuildContext context, int index) {
+    const String url =
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLinQnkpj_N0CjUzF1Whl1oPDELZNjyX1IGQ&usqp=CAU";
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, Constants.DetailScreenRoute),
+        onTap: () => Navigator.pushNamed(context, Constants.DetailScreenRoute,
+            arguments: DetailScreenArgument(index)),
         child: Container(
           width: 360,
           height: 100,
@@ -234,18 +222,9 @@ class HomeScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
             child: Row(
               children: [
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLinQnkpj_N0CjUzF1Whl1oPDELZNjyX1IGQ&usqp=CAU"),
-                    ),
-                  ),
-                ),
+                Hero(
+                    tag: "detail-image$index",
+                    child: ElevatedImage(Size(72, 72), url, 12)),
                 SizedBox(width: 15),
                 Padding(
                   padding: const EdgeInsets.all(8.0),

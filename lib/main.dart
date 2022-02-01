@@ -27,11 +27,19 @@ class MyApp extends StatelessWidget {
       home: Navigation(),
       routes: {
         Constants.HomeScreenRoute: (_) => HomeScreen(),
-        Constants.DetailScreenRoute: (_) => DetailScreen(),
+        Constants.DetailScreenRoute: (_) => DetailScreen(
+            argument:
+                ModalRoute.of(_)?.settings.arguments as DetailScreenArgument),
         Constants.MapScreenRoute: (_) => MapScreen(),
         Constants.ProfileScreenRoute: (_) => ProfileScreen(),
         Constants.HistoryScreenRoute: (_) => HistoryScreen(),
       },
     );
   }
+}
+
+class DetailScreenArgument {
+  final int index;
+
+  DetailScreenArgument(this.index);
 }

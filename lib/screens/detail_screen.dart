@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:onlinics_ui/ElevatedButton.dart';
+
+import 'package:onlinics_ui/CustomWidgets.dart';
+import 'package:onlinics_ui/main.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({Key? key}) : super(key: key);
+  final DetailScreenArgument argument;
+  const DetailScreen({
+    Key? key,
+    required this.argument,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +65,13 @@ class DetailScreen extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ElevatedImage(
-                      Size(140, 220),
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLinQnkpj_N0CjUzF1Whl1oPDELZNjyX1IGQ&usqp=CAU",
-                      18,
+                    Hero(
+                      tag: 'detail-image${argument.index}',
+                      child: ElevatedImage(
+                        Size(140, 220),
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLinQnkpj_N0CjUzF1Whl1oPDELZNjyX1IGQ&usqp=CAU",
+                        18,
+                      ),
                     ),
                     SizedBox(width: 20),
                     Padding(
@@ -223,33 +232,6 @@ class DetailScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
           ))
-        ],
-      ),
-    );
-  }
-
-  Widget ElevatedImage(Size size, String url, double radius) {
-    return Container(
-      width: size.width,
-      height: size.height,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(radius),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(url),
-        ),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(-2, 2),
-            blurRadius: 15.0,
-            color: Colors.grey.withOpacity(0.18),
-          ),
-          BoxShadow(
-            offset: Offset(1, -1),
-            blurRadius: 12.0,
-            color: Colors.grey.withOpacity(0.9),
-          ),
         ],
       ),
     );
