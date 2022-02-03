@@ -15,8 +15,10 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   int currentScreen = 0;
-  final List screenList = [
-    HomeScreen(),
+  late final List screenList = [
+    HomeScreen(
+      changeTab: onTabChange,
+    ),
     MapScreen(),
     HistoryScreen(),
     ProfileScreen(),

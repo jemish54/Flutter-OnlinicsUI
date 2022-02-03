@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:onlinics_ui/Constants.dart';
 import 'package:onlinics_ui/main.dart';
+import 'package:onlinics_ui/screens/detail_screen.dart';
 
 import '../CustomWidgets.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required this.changeTab}) : super(key: key);
+
+  final Function(int) changeTab;
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +53,18 @@ class HomeScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  CustomElevatedButton(
-                    Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR04Y9YQ59uATLECEfA605xY3za-yNLbSRtRA&usqp=CAU"))),
+                  InkWell(
+                    onTap: () => changeTab(3),
+                    child: CustomElevatedButton(
+                      Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR04Y9YQ59uATLECEfA605xY3za-yNLbSRtRA&usqp=CAU"))),
+                        ),
                       ),
                     ),
                   )
@@ -80,10 +85,13 @@ class HomeScreen extends StatelessWidget {
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
                   ),
-                  Text(
-                    "See all",
-                    style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w500),
+                  InkWell(
+                    onTap: () => changeTab(2),
+                    child: Text(
+                      "See all",
+                      style: TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.w500),
+                    ),
                   )
                 ],
               ),
@@ -197,8 +205,14 @@ class HomeScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, Constants.DetailScreenRoute,
-            arguments: DetailScreenArgument(index)),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => DetailScreen(
+                        argument: DetailScreenArgument(index),
+                      )));
+        },
         child: Container(
           width: 360,
           height: 100,

@@ -25,15 +25,6 @@ class MyApp extends StatelessWidget {
       ),
       title: "Onlinics",
       home: Navigation(),
-      routes: {
-        Constants.HomeScreenRoute: (_) => HomeScreen(),
-        Constants.DetailScreenRoute: (_) => DetailScreen(
-            argument:
-                ModalRoute.of(_)?.settings.arguments as DetailScreenArgument),
-        Constants.MapScreenRoute: (_) => MapScreen(),
-        Constants.ProfileScreenRoute: (_) => ProfileScreen(),
-        Constants.HistoryScreenRoute: (_) => HistoryScreen(),
-      },
     );
   }
 }
