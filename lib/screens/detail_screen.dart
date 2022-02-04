@@ -13,6 +13,7 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: Container(
         height: 100,
@@ -28,7 +29,7 @@ class DetailScreen extends StatelessWidget {
                   fontSize: 16,
                   color: Colors.white),
             )),
-            size: Size(370, 70)),
+            size: Size(size.width - 40, 70)),
         decoration: BoxDecoration(color: Colors.white, boxShadow: [
           BoxShadow(offset: Offset(0, -2), color: Colors.grey, blurRadius: 20.0)
         ]),
@@ -234,35 +235,6 @@ class DetailScreen extends StatelessWidget {
           ))
         ],
       ),
-    );
-  }
-
-  Widget ElevatedContainer(
-      {Size? size = null,
-      double radius = 12.0,
-      Color shadowColor = Colors.grey,
-      Color color = Colors.white,
-      required Widget child}) {
-    return Container(
-      width: size?.width,
-      height: size?.height,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(radius),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(-2, 2),
-            blurRadius: 15.0,
-            color: shadowColor.withOpacity(0.18),
-          ),
-          BoxShadow(
-            offset: Offset(1, -1),
-            blurRadius: 12.0,
-            color: shadowColor.withOpacity(0.9),
-          ),
-        ],
-      ),
-      child: child,
     );
   }
 }
