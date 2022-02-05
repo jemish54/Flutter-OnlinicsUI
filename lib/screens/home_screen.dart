@@ -23,11 +23,10 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomElevatedButton(
-                    Icon(
-                      Icons.account_tree_outlined,
-                      color: Colors.blue,
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedAssetImage(
+                        Size(48, 48), "assets/images/app_logo.jpg", 8),
                   ),
                   Column(
                     children: [
@@ -55,16 +54,14 @@ class HomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () => changeTab(3),
-                    child: CustomElevatedButton(
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR04Y9YQ59uATLECEfA605xY3za-yNLbSRtRA&usqp=CAU"))),
-                        ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Hero(
+                        tag: "profile-image",
+                        child: ElevatedImage(
+                            Size(48, 48),
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR04Y9YQ59uATLECEfA605xY3za-yNLbSRtRA&usqp=CAU",
+                            8),
                       ),
                     ),
                   )
