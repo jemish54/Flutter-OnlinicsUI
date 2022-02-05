@@ -71,7 +71,10 @@ class HomeScreen extends StatelessWidget {
             SizedBox(
               height: 25,
             ),
-            ElevatedSearchField(),
+            ElevatedField(
+                hint: "Search",
+                iconData: CupertinoIcons.search,
+                shadowColor: Colors.blue),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
               child: Row(
@@ -363,47 +366,6 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-
-  Widget ElevatedSearchField() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      alignment: Alignment.center,
-      height: 46,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.blue.withOpacity(0.23),
-              offset: const Offset(0, 10),
-              blurRadius: 50,
-            )
-          ]),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Icon(
-          CupertinoIcons.search,
-          color: Colors.blue,
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
-        Expanded(
-          child: TextField(
-            onChanged: (value) {},
-            decoration: InputDecoration(
-              hintText: "Search",
-              hintStyle: TextStyle(
-                color: Colors.black.withOpacity(0.5),
-              ),
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-            ),
-          ),
-        ),
-      ]),
     );
   }
 }

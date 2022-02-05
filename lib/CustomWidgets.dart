@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget CustomElevatedButton(Widget child) {
@@ -54,6 +55,51 @@ Widget ElevatedImage(Size? size, String url, double radius) {
   );
 }
 
+Widget ElevatedField(
+    {required String hint,
+    required IconData iconData,
+    Color shadowColor = Colors.grey,
+    bool isPassword = false}) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 20),
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    alignment: Alignment.center,
+    height: 46,
+    decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.0),
+        boxShadow: [
+          BoxShadow(
+            color: shadowColor.withOpacity(0.23),
+            offset: const Offset(0, 10),
+            blurRadius: 50,
+          )
+        ]),
+    child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      Icon(
+        iconData,
+        color: Colors.blue,
+      ),
+      SizedBox(
+        width: 10.0,
+      ),
+      Expanded(
+        child: TextField(
+          obscureText: isPassword,
+          onChanged: (value) {},
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(
+              color: Colors.black.withOpacity(0.5),
+            ),
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+          ),
+        ),
+      ),
+    ]),
+}
+    
 Widget ElevatedAssetImage(Size? size, String asset, double radius) {
   return Container(
     width: size?.width,

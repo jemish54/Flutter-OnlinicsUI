@@ -5,6 +5,7 @@ import 'package:onlinics_ui/Navigation.dart';
 import 'package:onlinics_ui/screens/detail_screen.dart';
 import 'package:onlinics_ui/screens/history_screen.dart';
 import 'package:onlinics_ui/screens/home_screen.dart';
+import 'package:onlinics_ui/screens/login_screen.dart';
 import 'package:onlinics_ui/screens/map_screen.dart';
 import 'package:onlinics_ui/screens/profile_screen.dart';
 import 'package:onlinics_ui/Constants.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.rubik().fontFamily,
       ),
       title: "Onlinics",
-      home: Navigation(),
+      home: LoginScreen(),
     );
   }
 }
