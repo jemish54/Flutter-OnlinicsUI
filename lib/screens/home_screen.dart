@@ -106,9 +106,9 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       // * Profile Photo
                       ElevatedImage(
-                          Size(48, 48),
+                          Size(54, 54),
                           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkAMBLJMV2zScXlokpLpjnWZ65ve6OHJ8vg&usqp=CAU",
-                          12),
+                          8),
                       // * Name and Specialization
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
