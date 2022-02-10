@@ -74,7 +74,8 @@ class HomeScreen extends StatelessWidget {
             ElevatedField(
                 hint: "Search",
                 iconData: CupertinoIcons.search,
-                shadowColor: Colors.blue),
+                shadowColor: Colors.blue,
+                getText: () {}),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
               child: Row(
@@ -106,9 +107,9 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       // * Profile Photo
                       ElevatedImage(
-                          Size(54, 54),
+                          Size(48, 48),
                           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkAMBLJMV2zScXlokpLpjnWZ65ve6OHJ8vg&usqp=CAU",
-                          8),
+                          12),
                       // * Name and Specialization
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

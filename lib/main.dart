@@ -1,17 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:onlinics_ui/Navigation.dart';
-import 'package:onlinics_ui/screens/detail_screen.dart';
-import 'package:onlinics_ui/screens/history_screen.dart';
-import 'package:onlinics_ui/screens/home_screen.dart';
-import 'package:onlinics_ui/screens/login_screen.dart';
-import 'package:onlinics_ui/screens/map_screen.dart';
-import 'package:onlinics_ui/screens/profile_screen.dart';
-import 'package:onlinics_ui/Constants.dart';
+import 'package:onlinics_ui/firebase_options.dart';
+import 'AuthWrapper.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +22,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.rubik().fontFamily,
       ),
       title: "Onlinics",
-      home: LoginScreen(),
+      home: AuthWrapper(),
     );
   }
 }

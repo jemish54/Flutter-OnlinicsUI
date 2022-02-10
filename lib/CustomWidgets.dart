@@ -54,11 +54,13 @@ Widget ElevatedImage(Size? size, String url, double radius) {
   );
 }
 
-Widget ElevatedField(
-    {required String hint,
-    required IconData iconData,
-    Color shadowColor = Colors.grey,
-    bool isPassword = false}) {
+Widget ElevatedField({
+  required String hint,
+  required IconData iconData,
+  Color shadowColor = Colors.grey,
+  bool isPassword = false,
+  required Function getText,
+}) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 20),
     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -85,7 +87,9 @@ Widget ElevatedField(
       Expanded(
         child: TextField(
           obscureText: isPassword,
-          onChanged: (value) {},
+          onChanged: (value) {
+            getText(value);
+          },
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(
