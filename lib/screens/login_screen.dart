@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:onlinics_ui/Constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:onlinics_ui/AuthWrapper.dart';
 import 'package:onlinics_ui/Navigation.dart';
-import 'package:onlinics_ui/screens/home_screen.dart';
 
 import '../CustomWidgets.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String email = "";
+    String password = "";
     return SafeArea(
       child: Material(
         color: Colors.white,
@@ -36,14 +36,23 @@ class LoginScreen extends StatelessWidget {
           ),
           Column(
             children: [
-              ElevatedField(hint: "User ID", iconData: CupertinoIcons.person),
+              ElevatedField(
+                hint: "User ID",
+                iconData: CupertinoIcons.person,
+                getText: (text) {
+                  email = text;
+                },
+              ),
               SizedBox(
                 height: 21,
               ),
               ElevatedField(
                   hint: "Password",
                   iconData: CupertinoIcons.lock,
-                  isPassword: true),
+                  isPassword: true,
+                  getText: (text) {
+                    password = text;
+                  }),
               Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 25, right: 30),
                 child: Row(
@@ -57,12 +66,10 @@ class LoginScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(shape: StadiumBorder()),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (ContextAction) => Navigation()));
+                onPressed: () async {
+                  await ref
+                      .read(authServiceProvider)
+                      .signUp(email: email, password: password);
                 },
                 child: Padding(
                   padding:
