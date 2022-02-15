@@ -105,7 +105,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     await proceed(context)
                         ? await ref
                             .read(authServiceProvider)
-                            .signUp(email: email, password: password)
+                            .logIn(email: email, password: password)
                         : {};
                   },
                   child: Padding(
@@ -130,10 +130,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Text("Don't have an account ?  "),
                         InkWell(
                           onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (_) => SignupScreen()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => SignupScreen()));
                           },
                           child: Text(
                             "Sign up",
