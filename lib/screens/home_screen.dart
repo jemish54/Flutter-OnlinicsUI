@@ -72,10 +72,11 @@ class HomeScreen extends StatelessWidget {
               height: 25,
             ),
             ElevatedField(
-                hint: "Search",
-                iconData: CupertinoIcons.search,
-                shadowColor: Colors.blue,
-                getText: () {}),
+              hint: "Search",
+              iconData: CupertinoIcons.search,
+              shadowColor: Colors.blue,
+              getText: () {},
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
               child: Row(

@@ -85,7 +85,7 @@ Widget ElevatedField({
         width: 10.0,
       ),
       Expanded(
-        child: TextField(
+        child: TextFormField(
           obscureText: isPassword,
           onChanged: (value) {
             getText(value);
