@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:onlinics_ui/AuthWrapper.dart';
-import 'package:onlinics_ui/Navigation.dart';
 
 import '../CustomWidgets.dart';
 
