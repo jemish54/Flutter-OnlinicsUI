@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
               hint: "Search",
               iconData: CupertinoIcons.search,
               shadowColor: Colors.blue,
-              getText: () {},
+              getText: (value) {},
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
