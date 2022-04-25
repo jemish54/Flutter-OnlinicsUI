@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:onlinics_ui/main.dart';
 import 'package:onlinics_ui/screens/detail_screen.dart';
 
 import '../CustomWidgets.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key, required this.changeTab}) : super(key: key);
 
   final Function(int) changeTab;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -44,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                             size: 1,
                           ),
                           Text(
-                            "Semarang,INA",
+                            "Vadodara,Gujarat",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 14),
                           ),
