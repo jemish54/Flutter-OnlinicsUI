@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:onlinics_ui/AuthWrapper.dart';
 import 'package:onlinics_ui/CustomWidgets.dart';
+import 'package:onlinics_ui/screens/edit_profile_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -51,7 +52,13 @@ class ProfileScreen extends ConsumerWidget {
                           right: 10,
                           child: CustomElevatedButton(
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            const EditProfileScreen()));
+                              },
                               icon: Icon(CupertinoIcons.pen),
                               color: Colors.blue[800],
                             ),
@@ -63,7 +70,7 @@ class ProfileScreen extends ConsumerWidget {
                             tag: "profile-image",
                             child: ElevatedImage(
                                 Size(126, 126),
-                                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR04Y9YQ59uATLECEfA605xY3za-yNLbSRtRA&usqp=CAU",
+                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png",
                                 20),
                           ),
                         ),

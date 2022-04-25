@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:onlinics_ui/domain/FireStoreService.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -37,7 +37,7 @@ class AuthService {
       try {
         var user = await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) => FirestoreService.firestore
+            .then((value) => FirebaseFirestore.instance
                     .collection('Users')
                     .doc(value.user?.uid)
                     .set({
