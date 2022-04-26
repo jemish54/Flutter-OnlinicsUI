@@ -1,18 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:onlinics_ui/main.dart';
 import 'package:onlinics_ui/screens/detail_screen.dart';
 
 import '../CustomWidgets.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key, required this.changeTab}) : super(key: key);
 
   final Function(int) changeTab;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List doctorList = [];
+
+  @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('Doctors')
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        doctorList = snapshot.docs.toList();
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -54,7 +74,7 @@ class HomeScreen extends ConsumerWidget {
                     ],
                   ),
                   InkWell(
-                    onTap: () => changeTab(3),
+                    onTap: () => widget.changeTab(3),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Hero(
@@ -89,7 +109,7 @@ class HomeScreen extends ConsumerWidget {
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
                   ),
                   InkWell(
-                    onTap: () => changeTab(2),
+                    onTap: () => widget.changeTab(2),
                     child: Text(
                       "See all",
                       style: TextStyle(
@@ -195,14 +215,15 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             SizedBox(height: 10),
-            for (int i = 0; i < 5; i++) DoctorCard(context, i),
+            for (int i = 0; i < doctorList.length; i++)
+              DoctorCard(context, i, doctorList[i])
           ],
         ),
       ),
     );
   }
 
-  Widget DoctorCard(BuildContext context, int index) {
+  Widget DoctorCard(BuildContext context, int index, DocumentSnapshot doctor) {
     const String url =
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLinQnkpj_N0CjUzF1Whl1oPDELZNjyX1IGQ&usqp=CAU";
     return Padding(
@@ -250,12 +271,12 @@ class HomeScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Dr. Anna Baker",
+                        doctor['name'],
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 3),
                       Text(
-                        "Heart Surgeon",
+                        doctor['type'],
                         style: TextStyle(color: Colors.grey[700], fontSize: 12),
                       ),
                       SizedBox(height: 8.0),
@@ -264,7 +285,7 @@ class HomeScreen extends ConsumerWidget {
                           StarRating(3),
                           SizedBox(width: 5.0),
                           Text(
-                            "| Reviews : 120",
+                            "| Reviews : ${doctor['reviews']}",
                             style: TextStyle(
                                 fontSize: 12, color: Colors.grey[800]),
                           )

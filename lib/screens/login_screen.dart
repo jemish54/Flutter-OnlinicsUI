@@ -26,11 +26,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     String email = "";
     String password = "";
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Material(
-          color: Colors.white,
-          child: Form(
-            key: _formKey,
+      child: Material(
+        color: Colors.white,
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
             child: Column(children: [
               Card(
                 elevation: 1,
