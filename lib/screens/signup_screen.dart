@@ -119,10 +119,16 @@ class _LoginScreenState extends ConsumerState<SignupScreen> {
                     style: ElevatedButton.styleFrom(shape: StadiumBorder()),
                     onPressed: () async {
                       await proceed(context)
-                          ? await ref.read(authServiceProvider).signUp(
-                                email: email,
-                                password: password,
-                              )
+                          ? {
+                              await ref.read(authServiceProvider).signUp(
+                                    email: email,
+                                    password: password,
+                                    name: name,
+                                    contact: cno,
+                                    age: age,
+                                  ),
+                              Navigator.pop(context)
+                            }
                           : {};
                     },
                     child: Padding(

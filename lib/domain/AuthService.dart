@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -5,36 +6,56 @@ class AuthService {
 
   Stream<User?> get authStateChange => _auth.authStateChanges();
 
-  Future<String> logIn({
+  Future<UserCredential?> logIn({
     required String email,
     required String password,
   }) async {
     if (email.isNotEmpty && password.isNotEmpty) {
       try {
-        await _auth.signInWithEmailAndPassword(
+        var user = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
-        return "LoggedIn";
+        return user;
       } on FirebaseAuthException catch (e) {
-        return e.message!;
+        return null;
       }
     }
-    return "Error";
+    return null;
   }
 
-  Future<String> signUp({
+  Future<String?> signUp({
     required String email,
     required String password,
+    required String name,
+    required String contact,
+    required String age,
+    String? appointments,
+    String? height,
+    String? weight,
+    String? gender,
   }) async {
     if (email.isNotEmpty && password.isNotEmpty) {
       try {
-        await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-        return "LoggedIn";
+        var user = await _auth
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((value) => FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(value.user?.uid)
+                    .set({
+                  "email": email,
+                  "username": name,
+                  "contact": contact,
+                  "age": age,
+                  "appointments": appointments == null ? '0' : 'N/A',
+                  "height": height == null ? 'N/A' : height,
+                  "weight": weight == null ? 'N/A' : weight,
+                  "gender": gender == null ? 'N/A' : gender,
+                }));
+        return "SignedUp";
       } on FirebaseAuthException catch (e) {
-        return e.message!;
+        return null;
       }
     }
-    return "Error";
+    return null;
   }
 
   Future<void> signOut() async {
