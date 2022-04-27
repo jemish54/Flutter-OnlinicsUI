@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 import 'package:onlinics_ui/CustomWidgets.dart';
 import 'package:onlinics_ui/main.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final DetailScreenArgument argument;
   const DetailScreen({
     Key? key,
@@ -12,24 +15,36 @@ class DetailScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: Container(
         height: 100,
         alignment: Alignment.center,
-        child: ElevatedContainer(
+        child: InkWell(
+          child: ElevatedContainer(
             radius: 20,
             color: Colors.blue,
-            child: Center(
-                child: Text(
-              "Make Appointment",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Colors.white),
-            )),
-            size: Size(size.width - 40, 70)),
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 2000),
+              child: Center(
+                  child: Text(
+                "Make Appointment",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white),
+              )),
+            ),
+            size: Size(size.width - 40, 70),
+          ),
+          onTap: () => addAppointment(context, widget.argument),
+        ),
         decoration: BoxDecoration(color: Colors.white, boxShadow: [
           BoxShadow(offset: Offset(0, -2), color: Colors.grey, blurRadius: 20.0)
         ]),
@@ -67,10 +82,10 @@ class DetailScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Hero(
-                      tag: 'detail-image${argument.index}',
+                      tag: 'detail-image${widget.argument.index}',
                       child: ElevatedImage(
                         Size(140, 220),
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLinQnkpj_N0CjUzF1Whl1oPDELZNjyX1IGQ&usqp=CAU",
+                        "https://www.sketchappsources.com/resources/source-image/doctor-illustration-hamamzai.png",
                         18,
                       ),
                     ),
@@ -83,13 +98,13 @@ class DetailScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Dr. Anna Baker",
+                            widget.argument.doctor['name'],
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20.0),
                           ),
                           SizedBox(height: 8),
                           Text(
-                            "Heart Surgeon",
+                            widget.argument.doctor['type'],
                             style: TextStyle(
                                 color: Colors.grey[700], fontSize: 16),
                           ),
@@ -107,7 +122,7 @@ class DetailScreen extends StatelessWidget {
                                   Text("Rating"),
                                   SizedBox(height: 2),
                                   Text(
-                                    "4.5 out of 5",
+                                    "${widget.argument.doctor['rating']} out of 5",
                                     style:
                                         TextStyle(fontWeight: FontWeight.w700),
                                   )
@@ -236,5 +251,29 @@ class DetailScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+Future<void> addAppointment(
+    BuildContext context, DetailScreenArgument argument) async {
+  DateTime? dateTime = await showOmniDateTimePicker(
+      context: context,
+      primaryColor: Colors.blue[800],
+      startInitialDate: DateTime.now(),
+      borderRadius: Radius.circular(12));
+  if (dateTime != null) {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('Appointments')
+        .add({
+      "doctorUid": argument.doctor.id,
+      "doctor": {
+        "name": argument.doctor['name'],
+        "type": argument.doctor['type'],
+      },
+      "timestamp": Timestamp.fromDate(dateTime),
+      "booktime": Timestamp.fromDate(DateTime.now())
+    });
   }
 }

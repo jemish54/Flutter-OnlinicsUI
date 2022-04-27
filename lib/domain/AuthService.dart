@@ -35,7 +35,7 @@ class AuthService {
   }) async {
     if (email.isNotEmpty && password.isNotEmpty) {
       try {
-        var user = await _auth
+        await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
             .then((value) => FirebaseFirestore.instance
                     .collection('Users')

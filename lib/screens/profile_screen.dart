@@ -86,8 +86,6 @@ class ProfileScreen extends ConsumerWidget {
                         vertical: 13, horizontal: 30),
                     child: Column(
                       children: [
-                        SingleDetail(CupertinoIcons.doc, "Appointments",
-                            "${snapshot.data?.get('appointments')}"),
                         SingleDetail(CupertinoIcons.person, "Gender",
                             "${snapshot.data?.get('gender')}"),
                         SingleDetail(CupertinoIcons.location, "Location",

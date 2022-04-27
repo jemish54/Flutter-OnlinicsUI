@@ -1,37 +1,73 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen> {
+  List schedules = [];
+  List histories = [];
+
+  @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('Appointments')
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        schedules = snapshot.docs
+            .where((element) =>
+                DateTime.now().isBefore(element['timestamp'].toDate()))
+            .toList();
+        histories = snapshot.docs
+            .where((element) =>
+                DateTime.now().isAfter(element['timestamp'].toDate()))
+            .toList();
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 22.0, bottom: 8, left: 22),
-            child: Text(
-              "Schedules",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 22.0, bottom: 8, left: 22),
+              child: Text(
+                "Schedules",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+              ),
             ),
-          ),
-          AppointmentCard(true),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 8, left: 22),
-            child: Text(
-              "History",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            for (var item in schedules) AppointmentCard(true, item),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 8, left: 22),
+              child: Text(
+                "History",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+              ),
             ),
-          ),
-          AppointmentCard(false),
-        ],
+            for (var item in histories) AppointmentCard(false, item),
+          ],
+        ),
       ),
     );
   }
 
-  Widget AppointmentCard(bool isOngoing) {
+  Widget AppointmentCard(bool isOngoing, DocumentSnapshot appointment) {
     return Padding(
       padding: EdgeInsets.all(16),
       child: Container(
@@ -65,7 +101,7 @@ class HistoryScreen extends StatelessWidget {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: NetworkImage(
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLinQnkpj_N0CjUzF1Whl1oPDELZNjyX1IGQ&usqp=CAU"),
+                            "https://www.sketchappsources.com/resources/source-image/doctor-illustration-hamamzai.png"),
                       ),
                     ),
                   ),
@@ -75,13 +111,13 @@ class HistoryScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Dr. Anna Baker",
+                        appointment['doctor']['name'],
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       SizedBox(height: 6),
                       Text(
-                        "Heart Surgeon",
+                        appointment['doctor']['type'],
                         style: TextStyle(color: Colors.grey[700], fontSize: 14),
                       ),
                     ],
@@ -107,7 +143,8 @@ class HistoryScreen extends StatelessWidget {
                         ),
                         SizedBox(width: 6),
                         Text(
-                          "Sun, Jan 19",
+                          DateFormat.yMMMMd()
+                              .format(appointment['timestamp'].toDate()),
                           style: TextStyle(color: Colors.blue[800]),
                         ),
                       ],
@@ -120,7 +157,8 @@ class HistoryScreen extends StatelessWidget {
                         ),
                         SizedBox(width: 6),
                         Text(
-                          "08.00am - 10.00am",
+                          DateFormat.jm()
+                              .format(appointment['timestamp'].toDate()),
                           style: TextStyle(color: Colors.blue[800]),
                         ),
                       ],
@@ -136,7 +174,14 @@ class HistoryScreen extends StatelessWidget {
                       flex: 9,
                       child: isOngoing
                           ? OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(FirebaseAuth.instance.currentUser?.uid)
+                                    .collection('Appointments')
+                                    .doc(appointment.id)
+                                    .delete();
+                              },
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 14),
@@ -153,7 +198,20 @@ class HistoryScreen extends StatelessWidget {
                   Expanded(
                       flex: 9,
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          var dateTime =
+                              await showOmniDateTimePicker(context: context);
+                          if (dateTime != null) {
+                            await FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(FirebaseAuth.instance.currentUser?.uid)
+                                .collection('Appointments')
+                                .doc(appointment.id)
+                                .update({
+                              'timestamp': Timestamp.fromDate(dateTime),
+                            });
+                          }
+                        },
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           child: Text(

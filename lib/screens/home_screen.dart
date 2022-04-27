@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onlinics_ui/main.dart';
 import 'package:onlinics_ui/screens/detail_screen.dart';
+import 'package:intl/intl.dart';
 
 import '../CustomWidgets.dart';
 
@@ -17,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List doctorList = [];
+  DocumentSnapshot? appointment;
 
   @override
   void initState() {
@@ -28,204 +31,220 @@ class _HomeScreenState extends State<HomeScreen> {
         doctorList = snapshot.docs.toList();
       });
     });
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('Appointments')
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        appointment = snapshot.docs.first;
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var format = new DateFormat.yMMMMd('en_US').add_jm();
     return SafeArea(
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedAssetImage(
-                        Size(48, 48), "assets/images/app_logo.jpg", 8),
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        "Current Location",
-                        style: TextStyle(color: Colors.grey[700], fontSize: 12),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            CupertinoIcons.location_solid,
-                            size: 1,
-                          ),
-                          Text(
-                            "Vadodara,Gujarat",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 14),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  InkWell(
-                    onTap: () => widget.changeTab(3),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Hero(
-                        tag: "profile-image",
-                        child: ElevatedImage(
-                            Size(48, 48),
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR04Y9YQ59uATLECEfA605xY3za-yNLbSRtRA&usqp=CAU",
-                            8),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            ElevatedField(
-              hint: "Search",
-              iconData: CupertinoIcons.search,
-              shadowColor: Colors.blue,
-              getText: (value) {},
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Upcoming Schedule",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-                  ),
-                  InkWell(
-                    onTap: () => widget.changeTab(2),
-                    child: Text(
-                      "See all",
-                      style: TextStyle(
-                          color: Colors.blue, fontWeight: FontWeight.w500),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            StackedCardBackground(Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-              child: Column(
-                children: [
-                  // * Doctor Details
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // * Profile Photo
-                      ElevatedImage(
-                          Size(48, 48),
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCkAMBLJMV2zScXlokpLpjnWZ65ve6OHJ8vg&usqp=CAU",
-                          12),
-                      // * Name and Specialization
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Dr. Haley Lawrence",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 2.0,
-                          ),
-                          Text(
-                            "Dermitologist",
-                            style: TextStyle(color: Colors.white60),
-                          ),
-                        ],
-                      ),
-                      CircleAvatar(
-                        child: IconButton(
-                          icon: Icon(
-                            CupertinoIcons.videocam,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.blue[700],
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Text(
-                        "Sun, Jan 19, 08.00am - 10.00am",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 35, left: 25, right: 25, bottom: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Let's find your doctor",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      CupertinoIcons.slider_horizontal_3,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+        child: Column(children: [
+          SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedAssetImage(
+                      Size(48, 48), "assets/images/app_logo.jpg", 8),
+                ),
+                Column(
                   children: [
-                    ElevatedChip(Icons.favorite, "Heart Surgeon"),
-                    ElevatedChip(Icons.medication, "Psychologist"),
-                    ElevatedChip(Icons.favorite, "Heart Surgeon"),
+                    Text(
+                      "Current Location",
+                      style: TextStyle(color: Colors.grey[700], fontSize: 12),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          CupertinoIcons.location_solid,
+                          size: 1,
+                        ),
+                        Text(
+                          "Vadodara,Gujarat",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 14),
+                        ),
+                      ],
+                    )
                   ],
                 ),
+                InkWell(
+                  onTap: () => widget.changeTab(3),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Hero(
+                      tag: "profile-image",
+                      child: ElevatedImage(
+                          Size(48, 48),
+                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png",
+                          8),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          ElevatedField(
+            hint: "Search",
+            iconData: CupertinoIcons.search,
+            shadowColor: Colors.blue,
+            getText: (value) {},
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Upcoming Schedule",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                ),
+                InkWell(
+                  onTap: () => widget.changeTab(2),
+                  child: Text(
+                    "See all",
+                    style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w500),
+                  ),
+                )
+              ],
+            ),
+          ),
+          StackedCardBackground(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+              child: appointment?.data == null
+                  ? Center(
+                      child: Text(
+                        "No Appointments Scheduled",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        // * Doctor Details
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // * Profile Photo
+                            ElevatedImage(
+                                Size(48, 48),
+                                "https://www.sketchappsources.com/resources/source-image/doctor-illustration-hamamzai.png",
+                                12),
+                            // * Name and Specialization
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  appointment?['doctor']['name'],
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 2.0,
+                                ),
+                                Text(
+                                  appointment?['doctor']['type'],
+                                  style: TextStyle(color: Colors.white60),
+                                ),
+                              ],
+                            ),
+                            CircleAvatar(
+                              child: IconButton(
+                                icon: Icon(
+                                  CupertinoIcons.videocam,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {},
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.blue[700],
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: Text(
+                              '${format.format(appointment?.get('timestamp')?.toDate())}',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 35, left: 25, right: 25, bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Let's find your doctor",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    CupertinoIcons.slider_horizontal_3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  ElevatedChip(Icons.favorite, "Heart Surgeon"),
+                  ElevatedChip(Icons.medication, "Psychologist"),
+                  ElevatedChip(Icons.favorite, "Heart Surgeon"),
+                ],
               ),
             ),
-            SizedBox(height: 10),
-            for (int i = 0; i < doctorList.length; i++)
-              DoctorCard(context, i, doctorList[i])
-          ],
-        ),
+          ),
+          SizedBox(height: 10),
+          for (int i = 0; i < doctorList.length; i++)
+            DoctorCard(context, i, doctorList[i])
+        ]),
       ),
     );
   }
 
   Widget DoctorCard(BuildContext context, int index, DocumentSnapshot doctor) {
     const String url =
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLinQnkpj_N0CjUzF1Whl1oPDELZNjyX1IGQ&usqp=CAU";
+        "https://www.sketchappsources.com/resources/source-image/doctor-illustration-hamamzai.png";
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
@@ -234,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(
                   builder: (_) => DetailScreen(
-                        argument: DetailScreenArgument(index),
+                        argument: DetailScreenArgument(index, doctor),
                       )));
         },
         child: Container(
@@ -282,7 +301,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 8.0),
                       Row(
                         children: [
-                          StarRating(3),
+                          StarRating(double.parse(doctor['rating'].toString())
+                              .toInt()),
                           SizedBox(width: 5.0),
                           Text(
                             "| Reviews : ${doctor['reviews']}",

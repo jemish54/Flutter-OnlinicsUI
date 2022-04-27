@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
-class MapScreen extends ConsumerWidget {
+class MapScreen extends StatelessWidget {
   MapScreen({Key? key}) : super(key: key);
 
   final String token =
@@ -11,7 +10,7 @@ class MapScreen extends ConsumerWidget {
   final String style = 'mapbox://styles/mapbox/streets-v11';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return SizedBox.expand(
       child: Container(
           child: MapboxMap(

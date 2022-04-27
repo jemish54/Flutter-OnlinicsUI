@@ -54,8 +54,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Column(
                 children: [
                   LoginElevatedField(
-                    hint: "User ID",
-                    iconData: CupertinoIcons.person,
+                    hint: "Email",
+                    iconData: CupertinoIcons.mail,
                     getText: (text) {
                       email = text;
                     },
